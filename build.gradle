@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'net.synchthia'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+ext {
+    name = 'Misq'
+    description = 'Extras.'
+    apiVersion = '1.14'
+    author = 'Synchthia Crew'
+    website = 'https://synchthia.net'
+    pluginMain = 'net.synchthia.misq.MisqPlugin'
+}
+
+repositories {
+    mavenCentral()
+
+    // Spigot
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand(
+                'name': project.ext.name,
+                'version': project.version,
+                'description': project.ext.description,
+                'apiVersion': project.ext.apiVersion,
+                'author': project.ext.author,
+                'website': project.ext.website,
+                'pluginMain': project.ext.pluginMain
+        )
+    }
+}
+
+jar {
+    archiveName("${project.ext.name}-unshaded.jar")
+}
+
+shadowJar {
+    archiveName("${project.ext.name}.jar")
+}
+
+artifacts {
+    archives shadowJar
+}
