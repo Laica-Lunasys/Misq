@@ -106,6 +106,7 @@ public class ChairsListener implements Listener {
         if (plugin.getStore().containsKey(player)) {
             Chair chair = plugin.getStore().get(player);
             chair.getArmorStand().removePassenger(player);
+            chair.getArmorStand().remove();
             player.teleport(chair.getBeforeLocation());
             plugin.getStore().remove(player);
         }
@@ -118,6 +119,7 @@ public class ChairsListener implements Listener {
             if (plugin.getStore().containsKey(player) && player != null) {
                 Chair chair = plugin.getStore().get(player);
                 chair.getArmorStand().removePassenger(player);
+                chair.getArmorStand().remove();
                 player.getServer().getScheduler().runTaskLater(plugin.getPlugin(), () -> player.teleport(chair.getBeforeLocation()), 1L);
 
                 plugin.getStore().remove(player);
