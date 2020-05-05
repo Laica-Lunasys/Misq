@@ -30,6 +30,11 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar/'
+    }
 }
 
 dependencies {
@@ -38,6 +43,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+
+    compile 'co.aikar:acf-bukkit:0.5.0-SNAPSHOT'
 }
 
 processResources {
@@ -54,12 +61,20 @@ processResources {
     }
 }
 
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
 jar {
     archiveName("${project.ext.name}-unshaded.jar")
 }
 
 shadowJar {
     archiveName("${project.ext.name}.jar")
+
+    relocate 'co.aikar.commands', 'net.synchthia.misq.libs.acf'
 }
 
 artifacts {
